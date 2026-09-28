@@ -1,0 +1,13 @@
+**/bin/
+**/obj/
+.vs/
+.vscode/
+.git/
+**/*.user
+**/*.suo
+**/TestResults/
+**/coverage/
+infrastructure/
+.artifacts/
+tests/
+*.md

@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>Framework.Domain</RootNamespace>
+    <AssemblyName>Framework.Domain</AssemblyName>
+  </PropertyGroup>
+
+</Project>
+

@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>Framework.Api</RootNamespace>
+    <AssemblyName>Framework.Api</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BuildingBlocks.AI.Core\BuildingBlocks.AI.Core.csproj" />
+    <ProjectReference Include="..\Framework.Application\Framework.Application.csproj" />
+    <ProjectReference Include="..\Framework.Contracts\Framework.Contracts.csproj" />
+    <ProjectReference Include="..\Framework.Infrastructure\Framework.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
+

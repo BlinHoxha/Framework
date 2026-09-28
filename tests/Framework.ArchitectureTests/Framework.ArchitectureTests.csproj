@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\BuildingBlocks.AI.Core\BuildingBlocks.AI.Core.csproj" />
+    <ProjectReference Include="..\..\src\BuildingBlocks.AI.Local\BuildingBlocks.AI.Local.csproj" />
+    <ProjectReference Include="..\..\src\Framework.Api\Framework.Api.csproj" />
+    <ProjectReference Include="..\..\src\Framework.Application\Framework.Application.csproj" />
+    <ProjectReference Include="..\..\src\Framework.Contracts\Framework.Contracts.csproj" />
+    <ProjectReference Include="..\..\src\Framework.Domain\Framework.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Framework.Infrastructure\Framework.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
+

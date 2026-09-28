@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>BuildingBlocks.AI.Core</RootNamespace>
+    <AssemblyName>BuildingBlocks.AI.Core</AssemblyName>
+  </PropertyGroup>
+
+</Project>

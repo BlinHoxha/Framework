@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Azure.Identity" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BuildingBlocks.AI.Core\BuildingBlocks.AI.Core.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>Framework.Application</RootNamespace>
+    <AssemblyName>Framework.Application</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BuildingBlocks.AI.Core\BuildingBlocks.AI.Core.csproj" />
+    <ProjectReference Include="..\Framework.Contracts\Framework.Contracts.csproj" />
+    <ProjectReference Include="..\Framework.Domain\Framework.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
+
