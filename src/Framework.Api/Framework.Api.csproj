@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../Framework.Web/Framework.Web.csproj" />
     <ProjectReference Include="..\BuildingBlocks.AI.Core\BuildingBlocks.AI.Core.csproj" />
     <ProjectReference Include="..\Framework.Application\Framework.Application.csproj" />
     <ProjectReference Include="..\Framework.Contracts\Framework.Contracts.csproj" />

@@ -1,4 +1,4 @@
-﻿# Framework
+# Framework
 
 Reusable .NET 9 foundations for layered APIs and document-based AI applications. Framework combines generic CRUD and persistence abstractions with a working flow for ingesting text, retrieving relevant evidence, and answering questions with citations.
 
@@ -37,12 +37,13 @@ The local provider loses indexed documents when the process stops. Azure stores 
 
 ## Architecture
 
-The solution contains eight source projects and three test projects:
+The solution contains nine source projects and three test projects:
 
 ```text
 Framework.sln
 src/
   Framework.Api/             HTTP endpoints, authentication, errors, composition
+  Framework.Web/             Reusable base CRUD/read-only controllers
   Framework.Application/     Use cases, service and persistence abstractions
   Framework.Domain/          Entity interfaces and domain exceptions
   Framework.Contracts/       Request/response DTOs and pagination models
@@ -200,7 +201,7 @@ Request validation and handled exceptions use ASP.NET Core Problem Details. Unkn
 
 Ingestion requires a title of at most 300 characters, content of at least 20 characters, a profile, and a nonempty tenant GUID. Language defaults to `en`. Questions must contain 2-2,000 characters; `maxResults` defaults to 5 and accepts 1-20. See the [AI DTOs](src/Framework.Contracts/AI) for complete request and response definitions.
 
-Generic CRUD controllers are abstract extension points, with no concrete business-entity endpoints in this repository. Derived controllers can provide get-by-ID, `filtered-search`, create, update, and delete routes. Pagination defaults to page 1 and 20 items, with a maximum page size of 500.
+Generic CRUD controllers in `Framework.Web.Controllers` are abstract extension points, with no concrete business-entity endpoints in this repository. The reference host retains compatibility facades in `Framework.Api.Controllers`. Derived controllers can provide get-by-ID, `filtered-search`, create, update, and delete routes. Pagination defaults to page 1 and 20 items, with a maximum page size of 500.
 
 ## Configuration
 
@@ -271,8 +272,8 @@ Implement new providers in separate adapter projects and register them in the ho
 
 1. Define entities, business rules, and DTOs in the consuming solution.
 2. Implement services and mappings using the generic bases where appropriate.
-3. Configure the consuming application's EF Core model, repositories, and provider-specific migrations. `FrameworkDbContext` is sealed and scans its own assembly for configurations, so external entities require explicit persistence integration.
-4. Add concrete routed controllers and register their services.
+3. Derive an application-owned context from `FrameworkDbContext`, pass its typed options to the protected constructor, and call `base.OnModelCreating` before applying application mappings. Supply provider-specific migrations. Reuse `BaseRepository<TEntity, TEntityId, TContext>` with that context; the two-parameter version remains available for the reference host's `FrameworkDbContext`.
+4. Reference `Framework.Web` and derive concrete routed controllers from `BaseControllerRO` or `BaseControllerCRUD`; register derived `BaseService` implementations and repositories. Use `BaseEntity<TId>` and `BaseDto<TId>` where an ID-bearing base class is useful, or implement their interfaces directly.
 5. Add authorization, tenant filters, validation, and tests for those features.
 
 For specialized documents, register an `IDocumentProfileCatalog` implementation after `AddApplication()`. Profiles describe allowed operations, languages, and human-review requirements. Ingestion checks operations but does not enforce the declared language list. `RequiresHumanReview` adds an answer notice; it does not create an approval workflow or audit trail.

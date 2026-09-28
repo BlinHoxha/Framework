@@ -9,14 +9,15 @@ using Microsoft.Extensions.Logging;
 
 namespace Framework.Infrastructure.Persistence.Repositories;
 
-public class BaseRepository<TEntity, TEntityId>(
-    FrameworkDbContext context,
-    ILogger<BaseRepository<TEntity, TEntityId>> logger,
+public class BaseRepository<TEntity, TEntityId, TContext>(
+    TContext context,
+    ILogger logger,
     IMapper mapper) : IBaseRepository<TEntity, TEntityId>
     where TEntity : class, IEntity<TEntityId>
+    where TContext : DbContext
 {
-    protected FrameworkDbContext Context { get; } = context;
-    protected ILogger<BaseRepository<TEntity, TEntityId>> Logger { get; } = logger;
+    protected TContext Context { get; } = context;
+    protected ILogger Logger { get; } = logger;
     protected IMapper Mapper { get; } = mapper;
     protected DbSet<TEntity> DbSet { get; } = context.Set<TEntity>();
 
@@ -112,3 +113,10 @@ public class BaseRepository<TEntity, TEntityId>(
         Context.SaveChangesAsync(cancellationToken);
 }
 
+
+// Compatibility registration for the Framework reference host.
+public class BaseRepository<TEntity, TEntityId>(
+    FrameworkDbContext context,
+    ILogger<BaseRepository<TEntity, TEntityId>> logger,
+    IMapper mapper) : BaseRepository<TEntity, TEntityId, FrameworkDbContext>(context, logger, mapper)
+    where TEntity : class, IEntity<TEntityId>;

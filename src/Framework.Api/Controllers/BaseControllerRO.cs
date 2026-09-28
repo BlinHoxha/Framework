@@ -1,43 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
 using Framework.Application.Abstractions.Services;
 using Framework.Contracts.Abstractions;
-using Framework.Contracts.Common;
-using Framework.Contracts.Pagination;
 using Framework.Domain.Abstractions;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Framework.Api.Controllers;
 
-[ApiController]
+// Compatibility facade. New consumers reference Framework.Web directly.
 public abstract class BaseControllerRO<TDto, TDtoGrid, TEntity, TEntityId, TService>(
-    ILogger logger,
-    TService entityService) : ControllerBase
+    ILogger logger, TService entityService)
+    : Framework.Web.Controllers.BaseControllerRO<TDto, TDtoGrid, TEntity, TEntityId, TService>(logger, entityService)
     where TDto : class, IEntityContract<TEntityId>
     where TDtoGrid : class
     where TEntity : class, IEntity<TEntityId>
-    where TService : IBaseService<TEntity, TEntityId>
-{
-    protected ILogger Logger { get; } = logger;
-    protected TService EntityService { get; } = entityService;
-
-    [HttpGet("{id}")]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public virtual async Task<ActionResult<CommonResult<TDto>>> GetById([Required] TEntityId id, CancellationToken cancellationToken)
-    {
-        TDto? result = await EntityService.GetById<TDto>(id, cancellationToken);
-        if (result is null)
-        {
-            return NotFound();
-        }
-
-        return Ok(CommonResult<TDto>.Success(result));
-    }
-
-    [HttpGet("filtered-search")]
-    public virtual async Task<ActionResult<CommonResult<PageResponse<TDtoGrid>>>> Search([FromQuery] PagedRequest request, CancellationToken cancellationToken)
-    {
-        PageResponse<TDtoGrid> result = await EntityService.Paginate<TDtoGrid>(request, cancellationToken);
-        return Ok(CommonResult<PageResponse<TDtoGrid>>.Success(result));
-    }
-}
-
+    where TService : IBaseService<TEntity, TEntityId>;
