@@ -1,0 +1,41 @@
+{
+	"folders": [
+		{
+			"path": "../../GastroIQ.App"
+		},
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../MixPilot"
+		},
+		{
+			"path": "../../MixPilot.Frontend"
+		},
+		{
+			"path": "../../BusinessSuite"
+		},
+		{
+			"path": "../../NetaFramework"
+		},
+		{
+			"path": "../../CER"
+		},
+		{
+			"path": "../../AI-Framework"
+		},
+		{
+			"path": "../../LegalIntelligence"
+		},
+		{
+			"path": "../../RadIntel-AI"
+		},
+		{
+			"path": "../../ConstructionFlow"
+		},
+		{
+			"path": "../../RetentionAgent"
+		}
+	],
+	"settings": {}
+}

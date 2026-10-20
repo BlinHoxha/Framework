@@ -1,9 +1,4 @@
-﻿using Framework.Application.Abstractions.Persistence;
-using BuildingBlocks.AI.Core.Abstractions;
-using BuildingBlocks.AI.Local;
-using BuildingBlocks.AI.Azure;
-using Azure.Identity;
-using Framework.Infrastructure.AI;
+using Framework.Application.Abstractions.Persistence;
 using Framework.Infrastructure.Options;
 using Framework.Infrastructure.Persistence;
 using Framework.Infrastructure.Persistence.Repositories;
@@ -56,45 +51,7 @@ public static class DependencyInjection
 
         services.AddScoped(typeof(IBaseRepository<,>), typeof(BaseRepository<,>));
 
-        AddAiInfrastructure(services, configuration);
-
         return services;
-    }
-
-    private static void AddAiInfrastructure(IServiceCollection services, IConfiguration configuration)
-    {
-        string providerName = configuration[$"{AiProviderOptions.SectionName}:{nameof(AiProviderOptions.Provider)}"]
-            ?? "Local";
-        AiProviderOptions options = new() { Provider = providerName };
-
-        services.AddSingleton<ITextChunker, FixedSizeTextChunker>();
-
-        if (string.Equals(options.Provider, "Azure", StringComparison.OrdinalIgnoreCase))
-        {
-            IConfigurationSection section = configuration.GetSection(AzureAiOptions.SectionName);
-            AzureAiOptions azureOptions = AzureAiOptions.FromValues(
-                section["OpenAiEndpoint"], section["ChatDeployment"], section["EmbeddingDeployment"],
-                section["SearchEndpoint"], section["SearchIndex"]);
-            services.AddSingleton(azureOptions);
-            services.AddSingleton<AzureTokenClient>(_ => new AzureTokenClient(new HttpClient(), new DefaultAzureCredential()));
-            services.AddSingleton<AzureOpenAiClient>();
-            services.AddSingleton<IChatModel>(provider => provider.GetRequiredService<AzureOpenAiClient>());
-            services.AddSingleton<AzureSearchKnowledgeStore>();
-            services.AddSingleton<IKnowledgeIndex>(provider => provider.GetRequiredService<AzureSearchKnowledgeStore>());
-            services.AddSingleton<IKnowledgeRetriever>(provider => provider.GetRequiredService<AzureSearchKnowledgeStore>());
-            return;
-        }
-
-        if (!string.Equals(options.Provider, "Local", StringComparison.OrdinalIgnoreCase))
-        {
-            throw new InvalidOperationException(
-                $"AI provider '{options.Provider}' is not installed. Add its Infrastructure adapter before selecting it.");
-        }
-
-        services.AddSingleton<InMemoryKnowledgeStore>();
-        services.AddSingleton<IKnowledgeIndex>(provider => provider.GetRequiredService<InMemoryKnowledgeStore>());
-        services.AddSingleton<IKnowledgeRetriever>(provider => provider.GetRequiredService<InMemoryKnowledgeStore>());
-        services.AddSingleton<IChatModel, LocalGroundedChatModel>();
     }
 
     private static DatabaseOptions BuildDatabaseOptions(IConfiguration configuration)

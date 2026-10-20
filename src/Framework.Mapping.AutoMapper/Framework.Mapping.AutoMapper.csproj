@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net9.0</TargetFramework><Version>0.2.0</Version></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Framework.Application.Abstractions/Framework.Application.Abstractions.csproj" />
+    <PackageReference Include="AutoMapper" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <Compile Include="../Framework.Application/Services/**/*.cs" LinkBase="Services" />
+    <Compile Include="../Framework.Application/Mapping/**/*.cs" LinkBase="Mapping" />
+    <Compile Include="../Framework.Application/DependencyInjection.cs" Link="DependencyInjection.cs" />
+  </ItemGroup>
+</Project>

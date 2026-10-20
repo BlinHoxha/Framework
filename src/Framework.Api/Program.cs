@@ -1,4 +1,4 @@
-﻿using Framework.Api.Extensions;
+using Framework.Api.Extensions;
 using Framework.Application;
 using Framework.Infrastructure.Health;
 using Framework.Infrastructure;
@@ -19,10 +19,6 @@ if (!builder.Environment.IsDevelopment())
         throw new InvalidOperationException("Authentication:Authority and Authentication:Audience are required outside Development.");
     }
 
-    if (string.Equals(builder.Configuration["AI:Provider"] ?? "Local", "Local", StringComparison.OrdinalIgnoreCase))
-    {
-        throw new InvalidOperationException("The Local AI provider cannot be used outside Development.");
-    }
 
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>

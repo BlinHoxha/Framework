@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -7,13 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <Compile Remove="Abstractions/**/*.cs;Services/**/*.cs;Mapping/**/*.cs;DependencyInjection.cs" />
+    <ProjectReference Include="../Framework.Application.Abstractions/Framework.Application.Abstractions.csproj" />
+    <ProjectReference Include="../Framework.Mapping.AutoMapper/Framework.Mapping.AutoMapper.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BuildingBlocks.AI.Core\BuildingBlocks.AI.Core.csproj" />
     <ProjectReference Include="..\Framework.Contracts\Framework.Contracts.csproj" />
     <ProjectReference Include="..\Framework.Domain\Framework.Domain.csproj" />
   </ItemGroup>

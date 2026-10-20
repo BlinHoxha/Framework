@@ -30,53 +30,13 @@ resource "azurerm_container_app_environment" "main" {
   tags                       = var.tags
 }
 
-resource "azurerm_cognitive_account" "openai" {
-  name                  = "${var.prefix}-openai"
-  resource_group_name   = azurerm_resource_group.main.name
-  location              = azurerm_resource_group.main.location
-  kind                  = "OpenAI"
-  sku_name              = "S0"
-  custom_subdomain_name = "${var.prefix}-openai"
-  local_auth_enabled    = false
-  tags                  = var.tags
-}
 
-resource "azurerm_cognitive_deployment" "chat" {
-  name                 = "chat"
-  cognitive_account_id = azurerm_cognitive_account.openai.id
-  model {
-    format  = "OpenAI"
-    name    = var.chat_model
-    version = var.chat_model_version
-  }
-  sku {
-    name     = "Standard"
-    capacity = var.chat_capacity
-  }
-}
 
-resource "azurerm_cognitive_deployment" "embeddings" {
-  name                 = "embeddings"
-  cognitive_account_id = azurerm_cognitive_account.openai.id
-  model {
-    format  = "OpenAI"
-    name    = var.embedding_model
-    version = var.embedding_model_version
-  }
-  sku {
-    name     = "Standard"
-    capacity = var.embedding_capacity
-  }
-}
 
-resource "azurerm_search_service" "main" {
-  name                         = "${var.prefix}-search"
-  resource_group_name          = azurerm_resource_group.main.name
-  location                     = azurerm_resource_group.main.location
-  sku                          = "basic"
-  local_authentication_enabled = false
-  tags                         = var.tags
-}
+
+
+
+
 
 resource "azurerm_mssql_server" "main" {
   name                         = "${var.prefix}-sql"
@@ -117,23 +77,11 @@ resource "azurerm_role_assignment" "acr_pull" {
   principal_id         = azurerm_user_assigned_identity.api.principal_id
 }
 
-resource "azurerm_role_assignment" "openai_user" {
-  scope                = azurerm_cognitive_account.openai.id
-  role_definition_name = "Cognitive Services OpenAI User"
-  principal_id         = azurerm_user_assigned_identity.api.principal_id
-}
 
-resource "azurerm_role_assignment" "search_contributor" {
-  scope                = azurerm_search_service.main.id
-  role_definition_name = "Search Index Data Contributor"
-  principal_id         = azurerm_user_assigned_identity.api.principal_id
-}
 
-resource "azurerm_role_assignment" "search_reader" {
-  scope                = azurerm_search_service.main.id
-  role_definition_name = "Search Index Data Reader"
-  principal_id         = azurerm_user_assigned_identity.api.principal_id
-}
+
+
+
 
 resource "azurerm_container_app" "api" {
   count                        = var.deploy_app ? 1 : 0
@@ -206,30 +154,6 @@ resource "azurerm_container_app" "api" {
         value = "SqlServer"
       }
       env {
-        name  = "AI__Provider"
-        value = "Azure"
-      }
-      env {
-        name  = "AI__Azure__OpenAiEndpoint"
-        value = azurerm_cognitive_account.openai.endpoint
-      }
-      env {
-        name  = "AI__Azure__ChatDeployment"
-        value = azurerm_cognitive_deployment.chat.name
-      }
-      env {
-        name  = "AI__Azure__EmbeddingDeployment"
-        value = azurerm_cognitive_deployment.embeddings.name
-      }
-      env {
-        name  = "AI__Azure__SearchEndpoint"
-        value = "https://${azurerm_search_service.main.name}.search.windows.net/"
-      }
-      env {
-        name  = "AI__Azure__SearchIndex"
-        value = "knowledge-chunks"
-      }
-      env {
         name  = "Authentication__Authority"
         value = var.authentication_authority
       }
@@ -241,9 +165,6 @@ resource "azurerm_container_app" "api" {
   }
 
   depends_on = [
-    azurerm_role_assignment.acr_pull,
-    azurerm_role_assignment.openai_user,
-    azurerm_role_assignment.search_contributor,
-    azurerm_role_assignment.search_reader
+    azurerm_role_assignment.acr_pull
   ]
 }

@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Framework.Infrastructure.Persistence;
 
-public class FrameworkDbContext : DbContext
+public class FrameworkDbContext : Framework.Persistence.FrameworkDbContext
 {
     public FrameworkDbContext(DbContextOptions<FrameworkDbContext> options) : base(options)
     {

@@ -2,6 +2,6 @@
   <PropertyGroup><TargetFramework>net9.0</TargetFramework></PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <ProjectReference Include="../Framework.Application/Framework.Application.csproj" />
+    <ProjectReference Include="../Framework.Application.Abstractions/Framework.Application.Abstractions.csproj" />
   </ItemGroup>
 </Project>

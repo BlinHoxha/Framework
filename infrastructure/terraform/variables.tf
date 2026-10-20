@@ -20,28 +20,16 @@ variable "sql_administrator_password" {
   type      = string
   sensitive = true
 }
-variable "chat_model" {
-  type    = string
-  default = "gpt-4o-mini"
-}
-variable "chat_model_version" { type = string }
-variable "chat_capacity" {
-  type    = number
-  default = 10
-}
-variable "embedding_model" {
-  type    = string
-  default = "text-embedding-3-small"
-}
-variable "embedding_model_version" { type = string }
-variable "embedding_capacity" {
-  type    = number
-  default = 10
-}
+
+
+
+
+
+
 variable "deploy_app" {
   type        = bool
   default     = false
-  description = "Enable after the API image and search index exist."
+  description = "Enable after the API image exists."
 }
 variable "image_tag" {
   type    = string
