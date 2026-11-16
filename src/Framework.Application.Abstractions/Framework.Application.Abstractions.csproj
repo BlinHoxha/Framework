@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup><TargetFramework>net9.0</TargetFramework><Version>0.2.0</Version></PropertyGroup>
+  <PropertyGroup><TargetFrameworks>net9.0;net10.0</TargetFrameworks><Version>0.2.0</Version></PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../Framework.Contracts/Framework.Contracts.csproj" />
     <ProjectReference Include="../Framework.Domain/Framework.Domain.csproj" />

@@ -26,13 +26,13 @@ For new code, choose the lean persistence provider and use explicit application 
 
 ## Build and run
 
-Use the .NET 9 SDK currently shared by the workspace:
+Use a .NET 10 SDK to build both `net9.0` and `net10.0`. Install the .NET 9 runtime as well to run the `net9.0` tests and reference host. Current consumers can continue targeting `net9.0`; moving them to `net10.0` is separate work.
 
 ```powershell
 dotnet restore Framework.sln
 dotnet build Framework.sln --no-restore
 dotnet test Framework.sln --no-build --no-restore
-dotnet run --project src/Framework.Api --launch-profile http
+dotnet run --project src/Framework.Api --framework net10.0 --launch-profile http
 ```
 
 Development Swagger: http://localhost:5280/swagger. Health: /api/v1/health, /health/live, /health/ready and /health. Database readiness requires a configured reachable database. The reference context has no business tables/migrations. Generic controllers are abstract extension points, not concrete business endpoints.
@@ -58,4 +58,4 @@ Provider-separated persistence is available through the new opt-in adapters. Sha
 
 MixPilot consumes Framework plus AI-Framework. BusinessSuite retains base libraries and an independent AI Core reference for future integration. Historical [MixPilot technical documentation](docs/MIXPILOT_TECHNICAL_GUIDE.md) and its PDF are preserved snapshots; use the migration guide/current product documentation for updated AI paths and ownership.
 
-See [general infrastructure](infrastructure/README.md). NuGet's pre-existing AutoMapper 12.0.1 advisory (GHSA-rvv3-g6hj-g44x) remains unresolved. Coordinate dependency remediation and migration to .NET 10 LTS before .NET 9 support ends on 10 November 2026.
+See [general infrastructure](infrastructure/README.md). AutoMapper 12.0.1 has three open, unmitigated high-severity advisories; see [dependency cleanup and compatibility](docs/DEPENDENCY_CLEANUP.md). Its remediation requires a separate owner decision. .NET 9 support ended on 10 November 2026, so consumers should plan their own .NET 10 migrations.

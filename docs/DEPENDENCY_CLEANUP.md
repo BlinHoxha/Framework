@@ -45,9 +45,21 @@ Products should switch from project to package references deliberately, pin a te
 
 ## Runtime migration remains coordinated work
 
-The installed SDK is 9.0.308 and current products target net9.0. This cleanup preserves that target and current EF/provider package versions; it does not claim a .NET 10 upgrade. Installing a new SDK, changing target frameworks, upgrading EF/providers and validating product migrations are a separate workspace migration. No machine SDK or production database was changed here.
+Framework now targets both `net9.0` and `net10.0`. The `net9.0` target retains the existing Microsoft package versions (9.0.8) and Npgsql EF provider (9.0.4). The `net10.0` target uses Microsoft packages 10.0.15 and Npgsql EF provider 10.0.3. AutoMapper and the other packages shared by both targets retain their existing versions. A .NET 10 SDK builds both targets; running the `net9.0` tests also requires a .NET 9 runtime.
 
-The next runtime migration should install .NET 10 side by side, validate all consuming products, coordinate EF/Npgsql/tool versions, regenerate reviewed deployment images/CI SDK settings, and run fresh plus upgrade-path PostgreSQL tests. Keep existing package releases available for rollback and verify any AutoMapper licensing/API migration before changing the shared mapping dependency. .NET 9 support ends on 10 November 2026; this follow-up remains time-sensitive.
+In the baseline comparison, the .NET 10 SDK pruned 22 transitive entries from the `net9.0` package graph after multi-targeting; no resolved package versions changed or new packages were added.
+
+Consumers still target `net9.0` and need separate migration tasks. Those tasks should validate product migrations and EF/Npgsql behavior, deployment images and CI SDK settings, and fresh plus upgrade-path PostgreSQL tests. Keep existing package releases available for rollback. .NET 9 support ended on 10 November 2026.
+
+### Open AutoMapper security risk
+
+AutoMapper 12.0.1 remains unchanged. The following high-severity advisories are open and **unmitigated** in Framework and every consumer that uses AutoMapper, including MixPilot:
+
+- [GHSA-rvv3-g6hj-g44x](https://github.com/advisories/GHSA-rvv3-g6hj-g44x): uncontrolled recursion can cause denial of service.
+- [GHSA-6vhm-j9h7-f9gh](https://github.com/advisories/GHSA-6vhm-j9h7-f9gh): constructor-parameter mapping bypasses `MaxDepth`.
+- [GHSA-gpwp-5797-mjff](https://github.com/advisories/GHSA-gpwp-5797-mjff): other mapping paths bypass `MaxDepth`, including paths without a configuration workaround.
+
+NuGet's NU1903 warnings remain visible. A licensed fixed AutoMapper version or replacement requires a separate owner decision and task (planned as FW-AM-001). This multi-targeting change makes no claim of mitigation.
 
 ## Verification evidence
 
