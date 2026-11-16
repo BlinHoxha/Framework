@@ -1,9 +1,6 @@
 {
 	"folders": [
 		{
-			"path": "../../GastroIQ.App"
-		},
-		{
 			"path": ".."
 		},
 		{
@@ -35,6 +32,33 @@
 		},
 		{
 			"path": "../../RetentionAgent"
+		},
+		{
+			"path": "../../AstroIllustrator"
+		},
+		{
+			"path": "../../EnergyFlow"
+		},
+		{
+			"path": "../../AstroIllustrator.Frontend"
+		},
+		{
+			"path": "../../RadIntel-AI.Frontend"
+		},
+		{
+			"path": "../../DocFlowAI.Frontend"
+		},
+		{
+			"path": "../../DocFlowAI"
+		},
+		{
+			"path": "../../LegalIntelligence.Frontend"
+		},
+		{
+			"path": "../../TaskMetricAI.Frontend"
+		},
+		{
+			"path": "../../TaskMetricAI"
 		}
 	],
 	"settings": {}
